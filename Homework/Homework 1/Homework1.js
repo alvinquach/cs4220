@@ -220,7 +220,7 @@ let titleCase = (str, lowercaseWords) => {
     }
 
     return words.join(" ");
-}
+};
 
 /**
  * This function takes a single string and returns a copy of the string
@@ -240,7 +240,48 @@ let inverseCase = (str) => {
         result += isLowerCase(char) ? charToUpper(char) : isUpperCase(char) ? charToLower(char) : char;
     }
     return result;
-}
+};
+
+
+// Question 2 - Objects
+
+/**
+ * This function takes a single string (str) argument and returns an object.
+ * The object's properties will be the unique letters present in str.
+ * The value of each property will be the frequency of each character present in the string.
+ */
+let getCharacterFrequency = (str) => {
+    let result = {};
+    for (let i = 0, len = str.length; i < len; i++) {
+        let char = str.charAt(i);
+        if (result[char] === undefined) {
+            // Try to use the alternate form of the character.
+            let alternate = isLowerCase(char) ? charToUpper(char) : isUpperCase(char) ? charToLower(char) : char; 
+            if (alternate == char || result[alternate] === undefined) {
+                result[char] = 1;
+                continue;
+            }
+            result[alternate] += 1;
+            continue;
+        }
+        result[char] += 1;
+    }
+    return result;
+};
+
+/**
+ * This function will take a single object. The object should be of the type returned by getCharacterFrequency.
+ * This function will display each character and it's corresponding frequency.
+ * Each character is be surrounded by quotation marks in your output.
+ * The output accounts for singular and plural values.
+ */
+let printCharacterFrequency = (frequencyObj) => {
+    for (let char in frequencyObj) {
+        let count = frequencyObj[char];
+        console.log("'" + char + "'" + " occurs " + count + (count > 1 ? " times." : " time."));
+    }
+};
+
 
 // Utility functions
 
@@ -283,7 +324,7 @@ let charToLower = (char) => {
 }
 
 
-
+/*
 function runStringFunctions(){
 	let str = 'I watched the storm, so beautiful yet terrific. The face of the moon was in shadow.'
 	
@@ -299,4 +340,16 @@ function runStringFunctions(){
 	console.log( 'inverseCase: ', inverseCase(str) )
 } 
 
+function runCharacterFunctions(){
+
+	let str = 'Hello, World!'
+	
+    let frequencyObj = getCharacterFrequency( str )
+    
+	printCharacterFrequency( frequencyObj )
+
+}
+
 runStringFunctions();
+runCharacterFunctions();
+*/
