@@ -10,18 +10,13 @@
  * string with all alphabets converted to uppercase characters.
  */
 let upperCase = (str) => {
-
-    // Assumes input is a valid string.
-
+    if (str == null) {
+        return null;
+    }
     let result = "";
-    for (let i = 0; i < str.length; i++) {
-        let charCode = str.charCodeAt(i);
-        if (charCode >= 97 && charCode <= 122) {
-            result += String.fromCharCode(charCode - 32);
-        }
-        else {
-            result += str.charAt(i);
-        }
+    for (let i = 0, len = str.length; i < len; i++) {
+        let char = str.charAt(i);
+        result += charToUpper(char);
     }
     return result;
 };
@@ -31,18 +26,14 @@ let upperCase = (str) => {
  * string with all alphabets converted to lowercase characters.
  */
 let lowerCase  = (str) => {
-
-    // Assumes input is a valid string.
-
+    if (str == null) {
+        return null;
+    }
     let result = "";
-    for (let i = 0; i < str.length; i++) {
-        let charCode = str.charCodeAt(i);
-        if (charCode >= 65 && charCode <= 90) {
-            result += String.fromCharCode(charCode + 32);
-        }
-        else {
-            result += str.charAt(i);
-        }
+    for (let i = 0, len = str.length; i < len; i++) {
+        let char = str.charAt(i);
+        result += charToLower(char);
+
     }
     return result;
 };
@@ -56,25 +47,59 @@ let lowerCase  = (str) => {
  * contains all words that should be unconditionally capitalized.
  */
 let sentenceCase = (str, unconditionallyCapitalized) => {
-
-    // Assumes all inputs are valid
+    if (str == null) {
+        return null;
+    }
 
     // First convert the string into sentence case, regardless of unconditionally capitalized words.
     str = upperCase(str.charAt(0)) + lowerCase(str.substring(1));
 
-    // If unconditionally capitalized words are not provided, then just stop here.
-    if (!unconditionallyCapitalized) {
-        return str;
-    }
-
     // Split words by spaces.
+    // NOTE: Does not check for other whitespace characters.
     let words = str.split(" ");
 
-    for (let i = 0; i < words.length; i++) {
+    // Declare unconditionallyCapitalizedMap here for performance reasons.
+    // This maps each unconditionally capitalized word to its lower case version.
+    let unconditionallyCapitalizedMap = {};
+
+    for (let i = 0, len = words.length; i < len; i++) {
+
         let word = words[i];
+
+        // Check if previous word ended with a period.
+        // If it did, then unconditionally capitailize this word.
+        if (i > 0) {
+            let prev = words[i - 1];
+
+            // Use indexOf() here since its more efficient then charAt()
+            if (prev.indexOf(".") == prev.length - 1) {
+                words[i] = sentenceCase(word);
+                continue;
+            }
+        }
+        
+        // If unconditionally capitalized words are not provided,
+        // move on to next iteration of the loop.
+        if (!unconditionallyCapitalized) {
+            continue;
+        }
+
         for (let uc of unconditionallyCapitalized) {
-            let lowerCaseUC = lowerCase(uc);
+
+            // Compute the lower case version of the unconditionally capitalized word,
+            // if it does not exist in the unconditionallyCapitalizedMap yet.
+            // These are stored in the map so that they are only computed once.
+            let lowerCaseUC = unconditionallyCapitalizedMap[uc];
+            if (lowerCaseUC === undefined) {
+                lowerCaseUC = lowerCase(uc);
+                unconditionallyCapitalizedMap[uc] = lowerCaseUC;
+            }
+
+            // Check if any part of the word matches the unconditionally capitalized word.
             let index = word.indexOf(lowerCaseUC);
+
+            // If there is a match, make sure the whole word excluding special characters match.
+            // If the match is preceeded or proceeded by another alphabet characer, then it's not a valid match.
             if (index > -1) {
                 if (index > 0 && isAlphabet(word.charAt(index - 1))) {
                     continue;
@@ -92,13 +117,171 @@ let sentenceCase = (str, unconditionallyCapitalized) => {
     return words.join(" ");
 };
 
+/**
+ * This function takes a single string and returns a copy of the string
+ * with the first character of each word converted to uppercase.
+ */
+let capitalizedCase = (str) => {
+    if (str == null) {
+        return null;
+    }
 
+    // Split words by spaces.
+    // NOTE: Does not check for other whitespace characters.
+    let words = str.split(" ");
 
-// TODO Move this inside sentenceCase() if its not used anywhere else.
+    for (let i = 0, len = words.length; i < len; i++) {
+        
+        // Reuse sentenceCase() here.
+        words[i] = sentenceCase(words[i]);
+    }
+
+    return words.join(" ");
+};
+
+/**
+ * This function takes a single string and returns a copy of the string
+ * comprised of characters that alternate between lower and uppercase.
+ */
+let alternatingCase = (str) => {
+    if (str == null) {
+        return null;
+    }
+    let result = "";
+    for (let i = 0, len = str.length; i < len; i++) {
+        let char = str.charAt(i);
+        result += i % 2 ? charToUpper(char) : charToLower(char);
+    }
+    return result;
+};
+
+/**
+ * This function takes two arguments: a single string (str) and an array of
+ * strings (lowercaseWords[]). It returns a copy of str with the initial
+ * letter of each word capitalized. After the first word in the string,
+ * however, articles, conjunctions, and prepositions not more than five
+ * letters long should all be lower case. The lowercaseWords array contains
+ * all words that should be lowercased.
+ */
+let titleCase = (str, lowercaseWords) => {
+    if (str == null) {
+        return null;
+    }
+
+    // Convert the input to all lower case and then split words by spaces.
+    // NOTE: Does not check for other whitespace characters.
+    let words = lowerCase(str).split(" ");
+
+    // Convert each word to its title case version.
+    for (let i = 0, len = words.length; i < len; i++) {
+        let word = words[i];
+
+        let forcedLowerCase;
+
+        // Check if previous word ended with a period.
+        // If it did, then unconditionally capitailize this word.
+        if (i > 0) {
+            let prev = words[i - 1];
+
+            // Use indexOf() here since its more efficient then charAt()
+            if (prev.indexOf(".") == prev.length - 1) {
+                forcedLowerCase = false;
+            }
+        }
+
+        if (forcedLowerCase !== false && lowercaseWords) {
+
+            for (let lc of lowercaseWords) {
+                
+                // Check if any part of the word matches the unconditionally capitalized word.
+                let index = word.indexOf(lc);
+                
+                // If there is a match, make sure the whole word excluding special characters match.
+                // If the match is preceeded or proceeded by another alphabet characer, then it's not a valid match.
+                if (index > -1) {
+                    if (index > 0 && isAlphabet(word.charAt(index - 1))) {
+                        continue;
+                    }
+                    let nextChar = word.charAt(index + lc.length);
+                    if (nextChar && isAlphabet(nextChar)) {
+                        continue;
+                    }
+                    forcedLowerCase = true;
+                    break;
+                }
+            }
+        }
+
+        // If the word is not marked to be forced to lower case, then capitalize its first letter.
+        // If it is marked to be lower case, then do nothing here since it is already in lower case.
+        if (!forcedLowerCase) {
+            words[i] = sentenceCase(word);
+        }
+    }
+
+    return words.join(" ");
+}
+
+/**
+ * This function takes a single string and returns a copy of the string
+ * with the first letter of each word lowercased, and all other letters
+ * in the word uppercased.
+ */
+let inverseCase = (str) => {
+    if (str == null) {
+        return null;
+    }
+
+    // Just do the inverse of capitalizedCase()
+    let capitailized = capitalizedCase(str);
+    let result = "";
+    for (let i = 0, len = capitailized.length; i < len; i++) {
+        let char = capitailized.charAt(i);
+        result += isLowerCase(char) ? charToUpper(char) : isUpperCase(char) ? charToLower(char) : char;
+    }
+    return result;
+}
+
+// Utility functions
+
+/** Checks if the input is an alphabet character. */
 let isAlphabet = (char) => {
     let charCode = char.charCodeAt(0);
     return charCode >= 65 && charCode <= 90 || charCode >= 97 && charCode <= 122;
 };
+
+/** Checks if the input is a lower case alphabet character. */
+let isLowerCase = (char) => {
+    let charCode = char.charCodeAt(0);
+    return charCode >= 97 && charCode <= 122;
+};
+
+/** Checks if the input is an uppser case alphabet character. */
+let isUpperCase = (char) => {
+    let charCode = char.charCodeAt(0);
+    return charCode >= 65 && charCode <= 90;
+};
+
+/** Converts a character to upper case. */
+let charToUpper = (char) => {
+    if (isLowerCase(char)) {
+        return String.fromCharCode(char.charCodeAt(0) - 32);
+    }
+    else {
+        return char;
+    }
+}
+
+/** Converts a character to lower case. */
+let charToLower = (char) => {
+    if (isUpperCase(char)) {
+        return String.fromCharCode(char.charCodeAt(0) + 32);
+    }
+    else {
+        return char;
+    }
+}
+
 
 
 function runStringFunctions(){
@@ -110,10 +293,10 @@ function runStringFunctions(){
 	console.log( 'upperCase: ', upperCase(str) )
 	console.log( 'lowerCase: ', lowerCase(str) )
 	console.log( 'sentenceCase: ', sentenceCase(str, unconditionallyCapitalized) )
-	// console.log( 'capitalizedCase: ', capitalizedCase(str) )
-	// console.log( 'alternatingCase: ', alternatingCase(str) )
-	// console.log( 'titleCase: ', titleCase(str, lowercaseWords) )
-	// console.log( 'inverseCase: ', inverseCase(str) )
+	console.log( 'capitalizedCase: ', capitalizedCase(str) )
+	console.log( 'alternatingCase: ', alternatingCase(str) )
+	console.log( 'titleCase: ', titleCase(str, lowercaseWords) )
+	console.log( 'inverseCase: ', inverseCase(str) )
 } 
 
 runStringFunctions();
