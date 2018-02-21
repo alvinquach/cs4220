@@ -11,7 +11,7 @@ const getTimes = (argument, callback) => {
     http.get(argument, res => callback(res));
 };
 
-const orderTimes = (urls) => {
+const printTimes = (urls) => {
     const result = [];
 
     // Assume that requests are sent at almost exactly the same times.
@@ -25,9 +25,8 @@ const orderTimes = (urls) => {
                 time: end - start
             });
 
-            // Sort result and print if all of the requested got a response.
+            // Print results after all of the requests got a response.
             if (result.length == urls.length) {
-                result.sort((a, b) => a.time - b.time);
                 console.log(result);
             }
 
@@ -88,6 +87,6 @@ const printStatus = (urls) => {
 //     'http://google.com/nothing'
 // ];
 
-// orderTimes(sample);
+// printTimes(sample);
 
 // printStatus(sample);
