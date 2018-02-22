@@ -104,3 +104,59 @@ const createObject = (people = []) => {
     }
     return result;
 };
+
+
+// TEST CODE
+
+const groups = new Groups()
+groups.addGroup({
+    name: 'Justice League',
+    leader: 'Wonder Woman',
+    members: ['Batman', 'Superman', 'Spiderman']
+})
+groups.addGroup({
+    name: 'Avengers',
+    leader: 'Iron Man',
+    members: ['Hulk', 'Thor', 'Captain America']
+})
+groups.print
+
+groups.addMember('Justice League', 'Aqua Man')
+groups.print
+
+groups.removeGroup('avengers')
+groups.print
+
+groups.removeMember('Justice League', 'spiderMan')
+groups.print
+
+const person = {
+    first: 'Elon',
+    last: 'Musk',
+    twitter: '@elonmusk',
+    company: 'Space X'
+}
+displayName(person)  // Elon Musk
+
+const people = [[{
+    key: 'name',
+    value: 'Elon Musk'
+}, {
+    key: 'twitter',
+    value: '@elonmusk'
+}, {
+    key: 'company',
+    value: 'Space X'
+}],
+[{
+    key: 'name',
+    value: 'Tim Cook'
+}, {
+    key: 'twitter',
+    value: '@tim_cook'
+}, {
+    key: 'company',
+    value: 'Apple'
+}]]
+
+console.log(createObject(people))
