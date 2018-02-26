@@ -8,7 +8,7 @@ const findString = (base = "Hello, World!") => {
             .update(string)
             .digest('hex');
         if (hash.indexOf("000") == 0) {
-            console.log(`The string is '${string}', and its hash is '${hash}'`);
+            console.log(`The 'SHA-256' digest of '${string}' is: ${hash}`);
             return;
         }
     }
