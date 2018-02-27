@@ -3,9 +3,7 @@
 // Alvin Quach, 300793745
 
 const crypto = require('crypto'),
-    request = require('request'),
-    fs = require('fs'),    
-    path = require('path');
+    request = require('request');
 
 
 // Question 1
@@ -32,24 +30,43 @@ question1();
 // Question 2
 
 const question2 = () => {
-    const publicKeyPath = path.resolve('keys', 'public_key.pem');
-    const publicKey = fs.readFileSync(publicKeyPath, 'utf8');
 
-    request("http://albertcervantes.com/cs4220/messages.json", (err, res, body) => {
-        if (err) {
-            console.log("Error:", err);
+    const publicKeyUrl = "https://raw.githubusercontent.com/cydneymikel/CS4220/master/Week05/examples/crypto/signing/keys/public_key.pem";
+    const dataUrl = "http://albertcervantes.com/cs4220/messages.json";
+
+    let publicKey, data;
+
+    const validateData = () => {
+        if (!publicKey || !data) {
             return;
         }
-
         // No more sanitation checks...
-        const messages = JSON.parse(body);
-        for (const message of messages) {
+        for (const message of data) {
             const verify = crypto.createVerify('RSA-SHA256');
             verify.update(message.message);
             const valid = verify.verify(publicKey, message.signature, 'hex');
             console.log(`${valid} - ${message.message}`);
         }
-        
+    };
+
+    // Get the public key from github.
+    request(publicKeyUrl, (err, res, body) => {
+        if (err) {
+            console.log("Error:", err);
+            return;
+        }
+        publicKey = body;
+        validateData();
+    });
+
+    // Get the list of messages.
+    request(dataUrl, (err, res, body) => {
+        if (err) {
+            console.log("Error:", err);
+            return;
+        }
+        data = JSON.parse(body);
+        validateData();
     });
 }
 
