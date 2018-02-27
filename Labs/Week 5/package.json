@@ -1,0 +1,11 @@
+{
+  "name": "cs4220-week5-lab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Lab.js",
+  "author": "Alvin Quach",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.83.0"
+  }
+}
