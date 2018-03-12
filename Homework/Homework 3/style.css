@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    font-family: Roboto;
+    color: rgba(0,0,0,0.87);
+}
+[v-cloak] {
+    display: none;
+}
+.header {
+    display: flex;
+    align-items: center;
+    height: 64px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+.header-link {
+    cursor: pointer;
+    padding: 0 16px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #29B6F6;
+}
+.header-link:hover {
+    color: #0288D1;
+}
+.header-separator {
+    font-size: 20px;
+}
+.section {
+    padding: 16px;
+}
+.loading {
+    padding: 16px;
+    font-size: 24px;
+    font-weight: 500;
+}
+.title {
+    font-size: 20px;
+    font-weight: 500;
+    padding-bottom: 8px;                
+}
+.subtitle {
+    font-size: 16px;
+    color: rgba(0,0,0,0.54);
+    padding-bottom: 8px;                
+}
+.input-container {
+    padding: 8px 0 24px 0;
+}
+select {
+    width: 192px;
+}
+.result-container {
+    width: 69%;
+    padding: 16px;
+    margin: 24px 0;
+    border: 2px solid #29B6F6;
+    border-radius: 2px;
+}
+
+.search-result {
+    margin: 24px 0;
+}
+
+.search-result:first-child, :last-child {
+    margin: 0;
+}
+
+.highlight {
+    background: #B3E5FC;
+}
