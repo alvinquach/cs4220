@@ -324,7 +324,7 @@ let charToLower = (char) => {
 }
 
 
-/*
+
 function runStringFunctions(){
 	let str = 'I watched the storm, so beautiful yet terrific. The face of the moon was in shadow.'
 	
@@ -352,4 +352,3 @@ function runCharacterFunctions(){
 
 runStringFunctions();
 runCharacterFunctions();
-*/
