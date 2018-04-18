@@ -2,7 +2,7 @@
 const chatComponent = {
     template: ` <div class="chat-box">
                    <p v-for="data in content">
-                       <img src="https://robohash.org/userName?set=set3" class="circle" width="30px">
+                       <img v-bind:src="data.user.avatar" class="circle" width="30px">
                        <span><strong>{{data.user.name}}</strong> <small>{{data.date}}</small><span>
                        <br />
                        {{data.message}}
@@ -17,7 +17,7 @@ const usersComponent = {
                    <h6>Active Users ({{users.length}})</h6>
                    <ul v-for="user in users">
                        <li>
-                            <img src="https://robohash.org/userName?set=set3" class="circle" width="30px">
+                            <img v-bind:src="user.avatar" class="circle" width="30px">
                             <span>{{user.name}}</span>
                        </li>
                        <hr>

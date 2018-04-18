@@ -25,7 +25,8 @@ module.exports = (server) => {
 
             const user = {
                 id: socket.id,
-                name: userName
+                name: userName,
+                avatar: `https://robohash.org/${userName}`
             }
 
             users.push(user)
