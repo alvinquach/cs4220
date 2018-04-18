@@ -28,6 +28,9 @@
             <!-- users column -->
             <div class="col s3">
 
+                <!-- welcome message -->
+                <welcome-component v-if="loggedIn" v-bind:user="user"></welcome-component>
+                    
                 <!-- active users component-->
                 <users-component v-bind:users="users"></users-component>
 

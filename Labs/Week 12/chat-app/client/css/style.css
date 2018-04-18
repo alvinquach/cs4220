@@ -138,5 +138,11 @@ hr {
 
 .me img {
     background: #FFFFFF;
+    width: 80px;
+}
+
+.me .name {
+    font-size: 16px;
+    padding: 4px 0;
 }
 
