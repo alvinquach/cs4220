@@ -20,7 +20,7 @@
           <i class="far fa-edit"></i>
         </span>
       </button>
-      <button class="button is-danger is-outlined" @click="deleteTodo(todo)">
+      <button class="button is-danger is-outlined" @click="deleteTodo(course, todo)">
         <span class="icon is-small">
           <i class="far fa-trash-alt"></i>
         </span>
@@ -44,8 +44,11 @@
         editTodo(todo) {
           todo.edit = !todo.edit
         },
-        deleteTodo(todo) {
-
+        deleteTodo(course, todo) {
+          const index = course.todos.indexOf(todo)
+          if (index > -1) {
+            course.todos.splice(index, 1)
+          }
         }
       }
   }
