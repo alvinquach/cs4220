@@ -35,5 +35,10 @@ export const store = {
       done: false,
       edit: false
     })
+  },
+  archive() {
+    for (const course of this.state.seedData) {
+      course.todos = course.todos.filter(todo => !todo.done)
+    }
   }
 }

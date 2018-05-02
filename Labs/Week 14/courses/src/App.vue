@@ -2,12 +2,14 @@
   <div id="app" class="container">
     <CourseTodoEntry />
     <CourseSchedule />
+    <Archive />
   </div>
 </template>
 
 <script>
 import CourseSchedule from './components/CourseSchedule.vue'
 import CourseTodoEntry from './components/CourseTodoEntry.vue'
+import Archive from './components/Archive.vue'
 
 export default {
   name: 'app',
@@ -20,7 +22,8 @@ export default {
   },
   components: {
     CourseSchedule,
-    CourseTodoEntry
+    CourseTodoEntry,
+    Archive
   }
 }
 </script>
